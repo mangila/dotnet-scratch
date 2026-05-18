@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>web_api</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\dotnet1.ServiceDefaults\dotnet1.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\openapi\OpenAPI.Client\src\Org.OpenAPITools\Org.OpenAPITools.csproj" />
+      <ProjectReference Include="..\openapi\OpenAPI.Server\src\Generated.Server\Generated.Server.csproj" />
+    </ItemGroup>
+
+</Project>

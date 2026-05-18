@@ -1,0 +1,283 @@
+openapi: 3.1.0
+info:
+  description: A basic CRUD service designed to maximize operational utility and efficiency
+    in managing items.
+  title: Item Management CRUD API
+  version: 1.0.0
+servers:
+- description: Local development server
+  url: http://localhost:5000/api/v1
+- description: Production server
+  url: https://api.production.com/api/v1
+paths:
+  /items:
+    get:
+      description: Retrieves a list of all existing items to maximize visibility and
+        access to available resources.
+      operationId: getItems
+      parameters:
+      - description: Maximum number of items to return for optimal data transfer.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - description: Number of items to skip for pagination efficiency.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Item"
+                type: array
+                default: null
+          description: Successfully retrieved list of items.
+      summary: List all items
+    post:
+      description: Adds a new item resource to the system to enhance total utility.
+      operationId: createItem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemCreate"
+        description: Item payload to create.
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+          description: Item successfully created.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Invalid input provided.
+      summary: Create a new item
+  /items/{id}:
+    delete:
+      description: Removes an obsolete or unnecessary item to optimize storage and
+        reduce clutter.
+      operationId: deleteItem
+      parameters:
+      - description: The unique identifier of the item.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Item successfully deleted. No content returned.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Item not found.
+      summary: Delete an item
+    get:
+      description: Retrieves detailed information for a specific item.
+      operationId: getItemById
+      parameters:
+      - description: The unique identifier of the item.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+          description: Item found and returned.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Item not found.
+      summary: Get an item by ID
+    parameters:
+    - description: The unique identifier of the item.
+      explode: false
+      in: path
+      name: id
+      required: true
+      schema:
+        format: uuid
+        type: string
+      style: simple
+    put:
+      description: Updates properties of an existing item to maintain accurate state
+        and value.
+      operationId: updateItem
+      parameters:
+      - description: The unique identifier of the item.
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemUpdate"
+        description: Updated item data.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+          description: Item successfully updated.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Invalid input provided.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Item not found.
+      summary: Update an existing item
+components:
+  schemas:
+    Item:
+      example:
+        id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        name: Standard Widget
+        description: A high-utility widget designed for general-purpose operations.
+        quantity: 100
+        createdAt: 2026-10-24T14:57:00Z
+        updatedAt: 2026-10-24T14:57:00Z
+      properties:
+        id:
+          description: Unique item identifier.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          format: uuid
+          type: string
+        name:
+          description: Name of the item.
+          example: Standard Widget
+          type: string
+        description:
+          description: Detailed explanation of item functionality and purpose.
+          example: A high-utility widget designed for general-purpose operations.
+          type: string
+          nullable: true
+        quantity:
+          default: 0
+          description: Available quantity in stock.
+          example: 100
+          minimum: 0
+          type: integer
+        createdAt:
+          description: Timestamp when the item was registered.
+          example: 2026-10-24T14:57:00Z
+          format: date-time
+          type: string
+        updatedAt:
+          description: Timestamp when the item was last modified.
+          example: 2026-10-24T14:57:00Z
+          format: date-time
+          type: string
+          nullable: true
+      required:
+      - createdAt
+      - id
+      - name
+    ItemCreate:
+      example:
+        name: Standard Widget
+        description: A high-utility widget designed for general-purpose operations.
+        quantity: 100
+      properties:
+        name:
+          description: Name of the item to be created.
+          example: Standard Widget
+          type: string
+        description:
+          description: Description of the new item.
+          example: A high-utility widget designed for general-purpose operations.
+          type: string
+          nullable: true
+        quantity:
+          default: 0
+          description: Initial stock quantity.
+          example: 100
+          minimum: 0
+          type: integer
+      required:
+      - name
+    ItemUpdate:
+      example:
+        name: Upgraded Widget
+        description: An improved widget delivering enhanced practical benefits.
+        quantity: 150
+      properties:
+        name:
+          description: Updated name for the item.
+          example: Upgraded Widget
+          type: string
+        description:
+          description: Updated description for the item.
+          example: An improved widget delivering enhanced practical benefits.
+          type: string
+          nullable: true
+        quantity:
+          description: Updated stock quantity.
+          example: 150
+          minimum: 0
+          type: integer
+    ErrorResponse:
+      example:
+        code: NOT_FOUND
+        message: The requested item could not be found.
+      properties:
+        code:
+          description: Machine-readable error code.
+          example: NOT_FOUND
+          type: string
+        message:
+          description: Human-readable error description.
+          example: The requested item could not be found.
+          type: string
+      required:
+      - code
+      - message
+

@@ -1,0 +1,27 @@
+[tasks.openapi]
+description = "Generate C# client and ASP.NET Core server stub from local openapi.yml using Docker"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "=== Generating C# Client SDK ==="
+docker run --rm \
+  -v "${PWD}:/local" \
+  openapitools/openapi-generator-cli generate \
+  -i /local/openapi/openapi.yaml \
+  -g csharp \
+  -o /local/openapi/OpenAPI.Client \
+  --additional-properties=targetFramework=net10.0,packageNamspace=Generated.Client
+
+echo "=== Generating ASP.NET Core Server Stub ==="
+docker run --rm \
+  -v "${PWD}:/local" \
+  openapitools/openapi-generator-cli generate \
+  -i /local/openapi/openapi.yaml \
+  -g aspnetcore \
+  -o /local/openapi/OpenAPI.Server \
+  --additional-properties=targetFramework=net10.0,packageName=Generated.Server,useSwashbuckle=false,buildTarget=library
+  
+dotnet sln add ./openapi/OpenAPI.Client/src/Org.OpenAPITools/Org.OpenAPITools.csproj
+dotnet sln add ./openapi/OpenAPI.Server/src/Generated.Server/Generated.Server.csproj
+'''

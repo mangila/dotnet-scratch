@@ -1,0 +1,7 @@
+apis:
+  v1:
+    root: ./openapi/v1/openapi.yml
+    output: ./openapi/v1/bundled-v1.yml
+  v2:
+    root: ./openapi/v2/openapi.yml
+    output: ./openapi/v2/bundled-v2.yml

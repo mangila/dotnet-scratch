@@ -1,0 +1,17 @@
+Generated.Server.sln
+README.md
+build.bat
+build.sh
+src/Generated.Server/.gitignore
+src/Generated.Server/Attributes/ValidateModelStateAttribute.cs
+src/Generated.Server/Authentication/ApiAuthentication.cs
+src/Generated.Server/Controllers/DefaultApi.cs
+src/Generated.Server/Converters/CustomEnumConverter.cs
+src/Generated.Server/Formatters/InputFormatterStream.cs
+src/Generated.Server/Generated.Server.csproj
+src/Generated.Server/Generated.Server.nuspec
+src/Generated.Server/Models/ErrorResponse.cs
+src/Generated.Server/Models/Item.cs
+src/Generated.Server/Models/ItemCreate.cs
+src/Generated.Server/Models/ItemUpdate.cs
+src/Generated.Server/OpenApi/TypeExtensions.cs
